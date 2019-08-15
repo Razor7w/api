@@ -181,3 +181,36 @@
                         "Version API" => VERSION);
           echo json_encode($info);
       });
+
+      /**
+    	* Descripción	: Validar Acceso
+    	* @author		  : <sebastian.carroza@gmail.cl> - 14/08/2019
+    	* @return     JSON
+    	*/
+      $app->get('/statuskey/{gl_key}', function(Request $request, Response $response){
+        $gl_key = $request->getAttribute('gl_key');
+        $sql = "SELECT bo_estado FROM app WHERE gl_key = '$gl_key' ";
+        try{
+          $db = new db();
+          $db = $db->connectDB();
+          $resultado = $db->query($sql);
+          if ($resultado->rowCount() > 0) {
+            $app = $resultado->fetchAll(PDO::FETCH_OBJ);
+            if ($app[0]->bo_estado == 1) {
+              $result = array('bo_estado' => true, 'existe' => true);
+              echo json_encode($result, JSON_UNESCAPED_UNICODE);
+            }else{
+              $result = array('bo_estado' => false, 'existe' => true);
+              echo json_encode($result, JSON_UNESCAPED_UNICODE);
+            }
+          }else{
+            $result = array('bo_estado' => false,'existe' => false);
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+          }
+          $resultado = null;
+          $db = null;
+        }catch(PDOException $e){
+          echo '{"error" : {"text":'.$e->getMessage().'}}';
+        }
+
+      });
