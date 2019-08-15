@@ -53,7 +53,11 @@
     }
   });
 
-  // GET player por codigo
+  /**
+	* Descripción	: Get player por codigo
+	* @author		  : <sebastian.carroza@gmail.cl> - 14/08/2019
+	* @return     JSON
+	*/
   $app->get('/player/{codigo}', function(Request $request, Response $response){
       $codigo = $request->getAttribute('codigo');
       $sql = "SELECT * FROM player WHERE codigo = $codigo ";
@@ -74,7 +78,11 @@
       }
   });
 
-  // POST crear player
+  /**
+	* Descripción	: POST crear player
+	* @author		  : <sebastian.carroza@gmail.cl> - 14/08/2019
+	* @return     JSON
+	*/
   $app->post('/player/nuevo', function(Request $request, Response $response){
     $codigo = $request->getParam('codigo');
     $nombre = $request->getParam('nombre');
@@ -99,7 +107,12 @@
     }
   });
 
-  // PUT modificar player
+
+  /**
+	* Descripción	: PUT modificar player
+	* @author		  : <sebastian.carroza@gmail.cl> - 14/08/2019
+	* @return     JSON
+	*/
     $app->put('/player/modificar/{id}', function(Request $request, Response $response){
       $id_player = $request->getAttribute('id');
       $codigo = $request->getParam('codigo');
@@ -130,7 +143,11 @@
       }
     });
 
-    // DELETE eliminar player
+    /**
+  	* Descripción	: DELETE eliminar player
+  	* @author		  : <sebastian.carroza@gmail.cl> - 14/08/2019
+  	* @return     JSON
+  	*/
       $app->delete('/player/delete/{id}', function(Request $request, Response $response){
         $id_player = $request->getAttribute('id');
         $sql = "DELETE FROM player
