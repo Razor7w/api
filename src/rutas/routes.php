@@ -35,21 +35,23 @@
 	* @return     JSON
 	*/
   $app->get('/player', function(Request $request, Response $response){
-    $sql ="SELECT * FROM player";
+    $sql ="SELECT * FROM plaayer";
     try{
       $db = new db();
       $db = $db->connectDB();
       $resultado = $db->query($sql);
       if ($resultado->rowCount() > 0) {
         $players = $resultado->fetchAll(PDO::FETCH_OBJ);
-        echo json_encode($players);
+        return  $response->withJson($players);
       }else{
-        echo json_encode("No existen players en la DB.");
+        $result = array("mensaje" => "No existen players en la DB.");
+        return  $response->withJson($result);
       }
       $resultado = null;
       $db = null;
     }catch(PDOException $e){
-      echo '{"error" : {"text":'.$e->getMessage().'}}';
+      $result = array("error" => "TEXT: ".$e->getMessage());
+      return  $response->withJson($result);
     }
   });
 
@@ -67,14 +69,16 @@
         $resultado = $db->query($sql);
         if ($resultado->rowCount() > 0) {
           $players = $resultado->fetchAll(PDO::FETCH_OBJ);
-          echo json_encode($players);
+          return  $response->withJson($players);
         }else{
-          echo json_encode("No existe player con esa id en la DB");
+          $result = array("mensaje" => "No existe player con esa id en la DB.");
+          return  $response->withJson($result);
         }
         $resultado = null;
         $db = null;
       }catch(PDOException $e){
-        echo '{"error" : {"text":'.$e->getMessage().'}}';
+        $result = array("error" => "TEXT: ".$e->getMessage());
+        return  $response->withJson($result);
       }
   });
 
@@ -98,12 +102,14 @@
 
       $resultado->execute();
 
-      echo json_encode("Nuevo Player guardado");
+      $result = array("mensaje" => "Nuevo Player guardado.");
+      return  $response->withJson($result);
 
       $resultado = null;
       $db = null;
     }catch(PDOException $e){
-      echo '{"error" : {"text":'.$e->getMessage().'}}';
+      $result = array("error" => "TEXT: ".$e->getMessage());
+      return  $response->withJson($result);
     }
   });
 
@@ -134,12 +140,14 @@
 
         $resultado->execute();
 
-        echo json_encode("Player modificado");
+        $result = array("mensaje" => "Player modificado.");
+        return  $response->withJson($result);
 
         $resultado = null;
         $db = null;
       }catch(PDOException $e){
-        echo '{"error" : {"text":'.$e->getMessage().'}}';
+        $result = array("error" => "TEXT: ".$e->getMessage());
+        return  $response->withJson($result);
       }
     });
 
@@ -159,15 +167,18 @@
           $resultado->execute();
 
           if ($resultado->rowCount() > 0) {
-            echo json_encode("Player eliminado");
+            $result = array("mensaje" => "Player eliminado.");
+            return  $response->withJson($result);
           }else{
-            echo json_encode("No existe Player con esa id");
+            $result = array("mensaje" => "No existe Player con esa id.");
+            return  $response->withJson($result);
           }
 
           $resultado = null;
           $db = null;
         }catch(PDOException $e){
-          echo '{"error" : {"text":'.$e->getMessage().'}}';
+          $result = array("error" => "TEXT: ".$e->getMessage());
+          return  $response->withJson($result);
         }
       });
 
@@ -179,7 +190,8 @@
       $app->get('/info', function(Request $request, Response $response){
           $info = array("Nombre API" => APP_NAME,
                         "Version API" => VERSION);
-          echo json_encode($info);
+
+          return  $response->withJson($info);
       });
 
       /**
@@ -198,19 +210,20 @@
             $app = $resultado->fetchAll(PDO::FETCH_OBJ);
             if ($app[0]->bo_estado == 1) {
               $result = array('bo_estado' => true, 'existe' => true);
-              echo json_encode($result, JSON_UNESCAPED_UNICODE);
+              return  $response->withJson($result);
             }else{
               $result = array('bo_estado' => false, 'existe' => true);
-              echo json_encode($result, JSON_UNESCAPED_UNICODE);
+              return  $response->withJson($result);
             }
           }else{
             $result = array('bo_estado' => false,'existe' => false);
-            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+            return  $response->withJson($result);
           }
           $resultado = null;
           $db = null;
         }catch(PDOException $e){
-          echo '{"error" : {"text":'.$e->getMessage().'}}';
+          $result = array("error" => "TEXT: ".$e->getMessage());
+          return  $response->withJson($result);
         }
 
       });
