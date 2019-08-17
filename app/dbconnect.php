@@ -2,9 +2,9 @@
 use Medoo\Medoo;
 
 $dbconn = new Medoo([
-  'database_type' => 'mysql',
-  'database_name' => 'apirest',
-  'server' => 'localhost',
-  'username' => 'root',
-  'password' => '',
+  'database_type' => DATABASE_TYPE,
+  'database_name' => DATABASE_NAME,
+  'server' => SERVER,
+  'username' => USERNAME,
+  'password' => PASSWORD,
 ]);

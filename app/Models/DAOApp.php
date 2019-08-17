@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class DAOPlayer{
+class DAOApp{
 
   protected $db;
 
@@ -12,7 +12,7 @@ class DAOPlayer{
 
 
   public function getAll(){
-      return  $this->db->select('player', '*');
+      return  $this->db->select('app', '*');
   }
 
 
