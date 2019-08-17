@@ -5,4 +5,4 @@
   return 'Home';
 });*/
 
-$app->get('/', 'HomeController:index');
+$app->get('/', 'Controller:index');

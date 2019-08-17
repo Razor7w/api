@@ -4,6 +4,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../app/dbconnect.php';
 //require __DIR__ . '/../src/config/app_config.php';
 //require __DIR__ . '/../src/config/db.php';
 
@@ -22,8 +23,8 @@ die();*/
 
 $container = $app->getContainer();
 
-$container['HomeController'] = function ($container){
-  return new \App\Controllers\HomeController;
+$container['Controller'] = function ($container){
+  return new \App\Controllers\Controller;
 };
 
 require __DIR__ . '/../app/routes.php';
