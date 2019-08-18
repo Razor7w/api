@@ -50,5 +50,29 @@ class Controller{
       return  $response->withJson($result);
     }
   }
-
+  /**
+  * Descripción	: Get player por codigo
+  * @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+  * @return     JSON
+  */
+  public function getPlayerByCodigo(Request $request, Response $response){
+    $perm = 1;
+    if (PRIVATE_API == 1) {
+      $gl_token = $request->getAttribute('gl_token');
+      $perm = $this->_DAOApp->getStatusToken($gl_token);
+    }
+    if($perm){
+      $codigo = $request->getAttribute('codigo');
+      $player = $this->_DAOPlayer->getPlayerByCodigo($codigo);
+      if ($player) {
+        return  $response->withJson($player);
+      }else{
+        $result = array("mensaje" => "No existe player con esa id en la DB.");
+        return  $response->withJson($result);
+      }
+    }else{
+      $result = array("mensaje" => "No tienes permisos para ocupar esta api");
+      return  $response->withJson($result);
+    }
+  }
 }

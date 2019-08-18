@@ -16,7 +16,11 @@ class DAOPlayer{
 
 
   public function getAll(){
-      return  $this->db->select('player', '*');
+      return  $this->db->select(TABLA_PLAYER, '*');
+  }
+
+  public function getPlayerByCodigo($codigo){
+      return  $this->db-> select(TABLA_PLAYER, '*' ,[ $this->primary_key => $codigo ]);
   }
 
 
