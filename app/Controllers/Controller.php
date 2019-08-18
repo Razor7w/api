@@ -103,8 +103,58 @@ class Controller{
         if($last_id <> 0){
           $result = array("mensaje" => "Nuevo Player guardado.");
           return  $response->withJson($result);
+        }else{
+          $result = array("mensaje" => "Problemas con el servidor.");
+          return  $response->withJson($result);
         }
       }
+    }else{
+      $result = array("mensaje" => "No tienes permisos para ocupar esta api");
+      return  $response->withJson($result);
+    }
+  }
+  /**
+	* Descripción	: PUT modificar player
+	* @author		  : <sebastian.carroza@gmail.cl> - 18/08/2019
+	* @return     JSON
+	*/
+  public function updatePlayer(Request $request, Response $response){
+    $perm = 1;
+    if (PRIVATE_API == 1) {
+      $gl_token = $request->getAttribute('gl_token');
+      $perm = $this->_DAOApp->getStatusToken($gl_token);
+    }
+    if($perm){
+      $codigo_up = $request->getAttribute('codigo');
+      $player = $this->_DAOPlayer->getPlayerByCodigo($codigo_up);
+      if($player){
+        $codigo = $request->getParam('codigo');
+        if ($codigo_up == $codigo) {
+          $result = array("mensaje" => "No se puede modificar el codigo por el mismo.");
+          return  $response->withJson($result);
+        }else{
+          $nombre = $request->getParam('nombre');
+          $equipo = $request->getParam('equipo');
+
+          $params = array("codigo_up" => $codigo_up,
+                          "codigo"    => $codigo,
+                          "nombre"    => $nombre,
+                          "equipo"    => $equipo
+                          );
+          $rowCount = $this->_DAOPlayer->updatePlayer($params);
+          if($rowCount <> 0){
+            $result = array("mensaje" => "Player Modificado.");
+            return  $response->withJson($result);
+          }else{
+            $result = array("mensaje" => "Problemas con el servidor.");
+            return  $response->withJson($result);
+          }
+        }
+      }else{
+        $result = array("mensaje" => "No existe player con esa id en la DB.");
+        return  $response->withJson($result);
+      }
+
     }else{
       $result = array("mensaje" => "No tienes permisos para ocupar esta api");
       return  $response->withJson($result);

@@ -24,8 +24,6 @@ class DAOPlayer{
   }
 
   public function insertPlayer($params){
-
-    //return $params;
     $this->db->insert(TABLA_PLAYER, [
       "codigo" => $params['codigo'],
       "nombre" => $params['nombre'],
@@ -33,6 +31,18 @@ class DAOPlayer{
     ]);
 
     return $this->db->id();
+  }
+
+  public function updatePlayer($params){
+    $data = $this->db->update(TABLA_PLAYER, [
+      "codigo" => $params['codigo'],
+      "nombre" => $params['nombre'],
+      "equipo" => $params['equipo']
+      ], [
+	      "codigo" => $params['codigo_up']
+    ]);
+
+    return $data->rowCount();
   }
 
 
