@@ -10,8 +10,8 @@ define('TABLA_APP', 'app');
 define('TABLA_PLAYER', 'player');
 
 
-
+//Info API
 define('APP_NAME', 'API_GO');
-define('VERSION', '0.4.4');
+define('VERSION', '1.0.0');
 define('PRIVATE_API', TRUE);
  ?>
