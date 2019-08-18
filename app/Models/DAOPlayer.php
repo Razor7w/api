@@ -23,5 +23,17 @@ class DAOPlayer{
       return  $this->db-> select(TABLA_PLAYER, '*' ,[ $this->primary_key => $codigo ]);
   }
 
+  public function insertPlayer($params){
+
+    //return $params;
+    $this->db->insert(TABLA_PLAYER, [
+      "codigo" => $params['codigo'],
+      "nombre" => $params['nombre'],
+      "equipo" => $params['equipo']
+    ]);
+
+    return $this->db->id();
+  }
+
 
 }

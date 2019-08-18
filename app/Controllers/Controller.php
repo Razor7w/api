@@ -75,4 +75,39 @@ class Controller{
       return  $response->withJson($result);
     }
   }
+  /**
+  * Descripción	: POST crear player
+  * @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+  * @return     JSON
+  */
+  public function insertPlayer(Request $request, Response $response){
+    $perm = 1;
+    if (PRIVATE_API == 1) {
+      $gl_token = $request->getAttribute('gl_token');
+      $perm = $this->_DAOApp->getStatusToken($gl_token);
+    }
+    if($perm){
+      $codigo = $request->getParam('codigo');
+      $player = $this->_DAOPlayer->getPlayerByCodigo($codigo);
+      if($player){
+        $result = array("mensaje" => "Ya existe este usuario en la DB");
+        return  $response->withJson($result);
+      }else{
+        $nombre = $request->getParam('nombre');
+        $equipo = $request->getParam('equipo');
+        $params = array("codigo" => $codigo,
+                        "nombre" => $nombre,
+                        "equipo" => $equipo
+                        );
+        $last_id = $this->_DAOPlayer->insertPlayer($params);
+        if($last_id <> 0){
+          $result = array("mensaje" => "Nuevo Player guardado.");
+          return  $response->withJson($result);
+        }
+      }
+    }else{
+      $result = array("mensaje" => "No tienes permisos para ocupar esta api");
+      return  $response->withJson($result);
+    }
+  }
 }
