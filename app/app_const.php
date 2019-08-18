@@ -12,6 +12,6 @@ define('TABLA_PLAYER', 'player');
 
 
 define('APP_NAME', 'API_GO');
-define('VERSION', '0.4.3');
+define('VERSION', '0.4.4');
 define('PRIVATE_API', TRUE);
  ?>

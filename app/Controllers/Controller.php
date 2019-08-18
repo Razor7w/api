@@ -16,7 +16,7 @@ class Controller{
 
   /**
   * Descripción	: Get Info Api
-  * @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+  * @author		  : <seba.carroza@gmail.cl> - 17/08/2019
   * @return     JSON
   */
   public function info (Request $request, Response $response){
@@ -28,7 +28,7 @@ class Controller{
 
   /**
 	* Descripción	: Get todos los players
-	* @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+	* @author		  : <seba.carroza@gmail.cl> - 17/08/2019
 	* @return     JSON
 	*/
   public function getPlayers (Request $request, Response $response){
@@ -52,7 +52,7 @@ class Controller{
   }
   /**
   * Descripción	: Get player por codigo
-  * @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+  * @author		  : <seba.carroza@gmail.cl> - 17/08/2019
   * @return     JSON
   */
   public function getPlayerByCodigo(Request $request, Response $response){
@@ -77,7 +77,7 @@ class Controller{
   }
   /**
   * Descripción	: POST crear player
-  * @author		  : <sebastian.carroza@gmail.cl> - 17/08/2019
+  * @author		  : <seba.carroza@gmail.cl> - 17/08/2019
   * @return     JSON
   */
   public function insertPlayer(Request $request, Response $response){
@@ -115,7 +115,7 @@ class Controller{
   }
   /**
 	* Descripción	: PUT modificar player
-	* @author		  : <sebastian.carroza@gmail.cl> - 18/08/2019
+	* @author		  : <seba.carroza@gmail.cl> - 18/08/2019
 	* @return     JSON
 	*/
   public function updatePlayer(Request $request, Response $response){
@@ -159,5 +159,38 @@ class Controller{
       $result = array("mensaje" => "No tienes permisos para ocupar esta api");
       return  $response->withJson($result);
     }
+  }
+  /**
+  * Descripción	: DELETE eliminar player
+  * @author		  : <seba.carroza@gmail.cl> - 14/08/2019
+  * @return     JSON
+  */
+  public function delPlayer(Request $request, Response $response){
+    $perm = 1;
+    if (PRIVATE_API == 1) {
+      $gl_token = $request->getAttribute('gl_token');
+      $perm = $this->_DAOApp->getStatusToken($gl_token);
+    }
+    if($perm){
+      $codigo = $request->getAttribute('codigo');
+      $player = $this->_DAOPlayer->getPlayerByCodigo($codigo);
+      if($player){
+        $rowCount = $this->_DAOPlayer->delPlayer($codigo);
+        if ($rowCount <> 0) {
+          $result = array("mensaje" => "Player Eliminado");
+          return  $response->withJson($result);
+        }else{
+          $result = array("mensaje" => "Problemas con el servidor.");
+          return  $response->withJson($result);
+        }
+      }else{
+        $result = array("mensaje" => "No existe player con esa id en la DB.");
+        return  $response->withJson($result);
+      }
+    }else{
+      $result = array("mensaje" => "No tienes permisos para ocupar esta api");
+      return  $response->withJson($result);
+    }
+
   }
 }

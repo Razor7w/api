@@ -45,5 +45,11 @@ class DAOPlayer{
     return $data->rowCount();
   }
 
+  public function delPlayer($codigo){
+    $data = $this->db->delete(TABLA_PLAYER, ["codigo" => $codigo] );
+
+    return $data->rowCount();
+  }
+
 
 }
